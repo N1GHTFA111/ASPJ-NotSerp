@@ -1,0 +1,5 @@
+use mongdb as the database to store all the data
+
+use google firebase to host the website and authentication
+
+firebase is not suppose to check password, just check from mongo db and if can, firebase create jwt and sign in with custom token

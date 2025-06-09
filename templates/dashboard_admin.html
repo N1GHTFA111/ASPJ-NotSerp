@@ -1,0 +1,63 @@
+{% extends 'dashboard_adminbase.html' %}
+
+{% block content %}
+<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 padding-bottom">
+        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+          <h1 id="page-header">Transactions</h1>
+        </div>
+        <br>
+        <div class="my-w4 w-100">
+            <img src="{{ url_for('static', filename='media/plot.png')}}" style="width:85%; height:auto; padding-left: 5%;" alt="graph">
+            {% if count == 0 %}
+            <p>There are no items.</p>
+            {% elif count == 1%}
+            <p>There is 1 item.</p>
+            {% else %}
+            <p>There are {{ count }} items.</p>
+            {% endif %}
+
+<!--            <label for="date_range" class="form-label">Filter By Index</label>-->
+<!--            <input type="range" class="form-range" min="0" max="{{len(list(time_transactions_dict.keys()))}}" id="date_range">-->
+            <div>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Timestamp</th>
+            <th>Item ID</th>
+            <th>Buyer</th>
+            <th>Item Description</th>
+            <th>Item Price</th>
+            <th>Collection Type</th>
+            <th>Shipping/Collection Date</th>
+            <th>Shipping/Collection Time</th>
+            <th>Destination Address</th>
+        </tr>
+        </thead>
+
+        {% for key in time_transactions_dict.keys() %}
+        <tr>
+            <td>{{ key }}</td>
+            <td>{{ time_transactions_dict[key].get_id() }}</td>
+            <td>{{ time_transactions_dict[key].get_owner() }}</td>
+            <td>{{ time_transactions_dict[key].get_description() }}</td>
+            <td>{{ time_transactions_dict[key].get_price() }}</td>
+            <td>{{ time_transactions_dict[key].get_collection_type() }}</td>
+            <td>{{ time_transactions_dict[key].get_shipping_date() }}</td>
+            <td>{{ time_transactions_dict[key].get_shipping_time() }}</td>
+            <td>{{ time_transactions_dict[key].get_destination_address() }}</td>
+
+        </tr>
+        {% endfor %}
+    </table>
+                <div>
+                    <h2>Total: SGD{{ total_revenue }}</h2>
+                    <form action="{{ url_for('export_transactions', logged_in=current_user.is_authenticated) }}" method="POST">
+                    <input type="submit" value="Generate Report" class="btn btn-warning">
+                    </form>
+
+                </div>
+</div>
+            </div>
+        </main>
+
+{% endblock %}

@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Medusa</title>
+      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+    <link href="{{ url_for('static', filename='css/dashboard.css')}}" rel="stylesheet">
+
+  </head>
+  <body>
+    {% block navbar %}
+        {% include 'includes/_index_nav_bar.html' %}
+    {% endblock %}
+    <div class="">
+              <header class="">
+        <nav class="navbar navbar-dark navbar-dark-blue bg-dark navbar-expand-lg">
+          <div class="container-fluid">
+            <a class="navbar-brand brand-name" href="#">Medusa</a>
+            <button class="navbar-toggler" role="button" data-bs-toggle="collapse" data-bs-target="#navbarTop" aria-controls="navbarTop" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="collapse_resize">Menu</span>
+        </button>
+        <!-- to make the collapsed navbar button on the right -->
+        <button class="navbar-toggler" type="button" name="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+            <div class="collapse navbar-collapse" id="navbarTop">
+              <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <!-- <li class="nav-item">
+                  <a class="nav-link active" href="#">Profile</a>
+                </li> -->
+                <form class="d-flex searchbar_styles" role="search" action="" method="POST">
+                  <input id="searchbar" list="sections" type="search" name="searchbar" value="" class="form-control me-2" placeholder="Search" aria-label="Search">
+                  <datalist id="sections">
+                    <option value="Home"></option>
+                    <option value="About"></option>
+                    <option value="Contact"></option>
+                    <option value="Orders Management"></option>
+                    <option value="Custom Computers"></option>
+                    <option value="Computer Parts"></option>
+                    <option value="Accessories"></option>
+                    <option value="Pricelist Management"></option>
+                    <option value="Coupons Redemption"></option>
+                    <option value="Cart"></option>
+                  </datalist>
+                  <button id="anchor_redirect_below" type="submit" name="button" class="btn btn-primary">Search</button>
+                </form>
+                <li class="nav-item">
+                  <a class="nav-link active" href="{{ url_for('updateUser')}}">Update</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link active" href="{{ url_for('logout')}}">Logout</a>
+                </li>
+                  <a id="redeem" class="nav-link active" href="">Redeem</a>
+                </li>
+                <!-- <div class="nav-item text-nowrap">
+                  <a class="nav-link px-3" href="#"><i class="fa fa-solid fa-cart-arrow-down fa-2x padding_icon"></i>Cart</a>
+
+                </div> -->
+              </ul>
+            </div>
+
+
+
+            <div class="navbar-nav">
+              <div class="nav-item text-nowrap">
+                <!-- <form class="d-flex searchbar_styles" role="search" action="" method="get">
+                  <input id="searchbar" list="sections" type="search" name="" value="" class="form-control me-2" placeholder="Search" aria-label="Search">
+                  <button id="anchor_redirect_below" type="button" name="button" class="btn btn-primary">Search</button>
+                </form> -->
+              </div>
+              <div class="nav-item text-nowrap">
+                <a id="cart" class="nav-link px-3" href=""><i class="fa fa-solid fa-cart-arrow-down fa-2x padding_icon"></i>Cart</a>
+
+              </div>
+            </div>
+          </div>
+
+        </nav>
+      </header>
+        <div class="container-fluid">
+            <div class="row">
+                <nav id="sidebarMenu" class="sidebar-height col-md-3 col-lg-2 d-lg-block sidebar-dark-blue bg-custom sidebar collapse">
+        <div class="position-sticky">
+          <!-- <div class=" sidebar-dark-blue d-flex flex-column flex-shrink-0 p-3 sidebar-width sidebar-height"> -->
+          <h5 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1">
+            <span>Main</span>
+          </h5>
+          <ul class="nav flex-column">
+            <li class="nav-item">
+              <a id="home" class="nav-link active text-grey" href="{{ url_for('get_dashboard', username=current_user.get_username(), logged_in=current_user.is_authenticated)}}">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-grey" href="#">About</a>
+            </li>
+            <li class="nav-item">
+              <a id="contact" class="nav-link text-grey" href="">Contact</a>
+            </li>
+            <li class="nav-item">
+              <a id="shipments" class="nav-link text-grey" href="">Orders</a>
+            </li>
+          </ul>
+          <h5 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1">
+            <span>Products</span>
+          </h5>
+          <ul class="nav flex-column">
+            <li class="nav-item">
+              <a id="computers" class="nav-link text-grey" href="">Custom PCs</a>
+            </li>
+            <li class="nav-item">
+              <a id="parts" class="nav-link text-grey" href="">PC Parts</a>
+            </li>
+            <li class="nav-item">
+              <a id="accessories" class="nav-link text-grey" href="">Accessories</a>
+            </li>
+            <li class="nav-item">
+              <a id="pricelist" class="nav-link text-grey" href="">Price List</a>
+            </li>
+
+          </ul>
+          <hr>
+          <h5 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1">
+            <span>Current User</span>
+          </h5>
+          <div class="dropdown">
+            <a class="nav-link text-grey dropdown-toggle dropdown-move-right" id="
+            dropdownMenuLink" aria-expanded="false" data-bs-toggle="dropdown">
+              <strong>{{ user }}</strong>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-dark" arial-labelledby="dropdownMenuLink">
+              <li>
+                <a class="dropdown-item text-grey" href="#">Profile</a>
+              </li>
+              <li>
+                <a class="dropdown-item text-grey" href="{{ url_for('updateUser')}}">User Settings</a>
+              </li>
+                <li>
+                <a class="dropdown-item text-grey" href="{{ url_for('deleteUser')}}">Delete User</a>
+              </li>
+              <li>
+                <hr class="dropdown-divider">
+              </li>
+              <li>
+                <a class="dropdown-item text-grey" href="{{ url_for('logout')}}">Log Out</a>
+              </li>
+            </ul>
+          </div>
+          <!-- </div> -->
+
+        </div>
+      </nav>
+
+                {% block content %}
+            {% endblock %}
+              <script src="https://account.snatchbot.me/script.js"></script><script>window.sntchChat.Init(302639)</script>
+
+
+
+
+              </div>
+
+
+        </div>
+
+    </div>
+
+    {% block scripts %}
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.min.js" integrity="sha384-IDwe1+LCz02ROU9k972gdyvl+AESN10+x7tBKgc9I5HFtuNz0wWnPclzo6p9vxnk" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script src="{{ url_for('static', filename='scripts/dashboard.js')}}"></script>
+    {% endblock %}
+  </body>
+</html>

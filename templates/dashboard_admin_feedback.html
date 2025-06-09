@@ -1,0 +1,97 @@
+{% extends 'dashboard_admin_base.html' %}
+
+{% block content %}
+<div class="container-fluid p-0">
+
+    <div class="mb-3">
+        <h1 class="h3 d-inline align-middle" id="page-identifier">Feedback</h1>
+
+    </div>
+
+    <div class="row">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">All Feedback</h5>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover my-0">
+                        <thead>
+                        <th>Feedback Id</th>
+                        <th>Feedback Title</th>
+                        <th>Description</th>
+                        <th>View More</th>
+                        <th>User who created</th>
+                        <th>Time created</th>
+                        <th>Latest time updated</th>
+
+
+                        </thead>
+
+                        {% for feedback in feedback_model %}
+                        <tr>
+                            <td>{{feedback.get_feedback_id()}}</td>
+                            {% if feedback.get_title() | length > 25 %}
+                            <td>{{ feedback.get_title()[:25] }}...</td>
+                            {% else %}
+                            <td>{{ feedback.get_title() }}</td>
+                            {% endif %}
+                            {% if feedback.get_description() | length > 25 %}
+                            <td>{{ feedback.get_description()[:25] }}...</td>
+                            {% else %}
+                            <td>{{ feedback.get_description() }}</td>
+                            {% endif %}
+
+
+                            <td>
+                                <button type="button" class="btn btn-dark" data-bs-toggle="modal"
+                                        data-bs-target="#myModal_{{feedback.get_feedback_id()}}_viewFeedback">
+                                    View More
+                                </button>
+                                <div class="modal" id="myModal_{{feedback.get_feedback_id()}}_viewFeedback">
+                                    <div class="modal-dialog modal-lg">
+                                        <div class="modal-content">
+
+                                            <!--                                Modal Header-->
+                                            <div class="modal-header">
+                                                <h4 class="modal-title">Title: {{feedback.get_title()}}</h4><br>
+
+                                                <button type="button" class="btn-close"
+                                                        data-bs-dismiss="modal"></button>
+                                            </div>
+
+                                            <!--                                Modal Body-->
+                                            <div class="modal-body">
+                                                {{feedback.get_description()}}
+
+
+                                            </div>
+
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+
+
+                            <td>{{feedback.get_username()}}</td>
+                            <td>{{feedback.get_time_created()}}</td>
+                            <td>{{feedback.get_time_last_updated()}}</td>
+
+
+                        </tr>
+                        {% endfor %}
+
+
+                    </table>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+</div>
+
+{% endblock %}
+

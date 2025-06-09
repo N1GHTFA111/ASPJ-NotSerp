@@ -1,0 +1,212 @@
+{% extends 'dashboard_user_base.html' %}
+
+{% block content %}
+<div class="container-fluid p-0">
+
+                <div class="mb-3">
+                    <h1 class="h3 d-inline align-middle" id="page-identifier">Finance</h1>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+
+                        <div class="card">
+                            <div class="card-header">
+                                <h2 class="">Transactions</h2>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+
+                                    <table id="transactionsTable" class="table table-hover">
+                                        <thead>
+                                        <tr>
+                                            <th scope="col">Transaction ID</th>
+
+                                            <th scope="col">Time</th>
+                                            <th scope="col">Product Name</th>
+                                            <th scope="col">Product ID</th>
+                                            <th scope="col">Quantity</th>
+                                            <th scope="col">Unit Price</th>
+                                            <th scope="col">Total Price</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody class="table-group-divider">
+                                        {% if transactions %}
+                                        {% for transaction in transactions %}
+                                        <tr>
+                                            <td>{{ transaction.transaction_id }}</td>
+                                            <td>{{ transaction.time }}</td>
+                                            <td>{{ transaction.product_name }}</td>
+                                            <td>{{ transaction.product_id }}</td>
+                                            <td>{{ transaction.product_quantity }}</td>
+                                            <td>{{ transaction.unit_price }}</td>
+                                            <td>{{transaction.unit_price*transaction.product_quantity}}</td>
+                                        </tr>
+                                        {% endfor %}
+                                        {% else %}
+                                        <tr>
+                                            <td colspan="7">There are currently no transactions.</td>
+                                        </tr>
+                                        {% endif %}
+                                        </tbody>
+                                    </table>
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12">
+
+                        <div class="card">
+                            <div class="card-header">
+                                <h2 class="">Points Redeemed</h2>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+
+                                    <table id="pointsTable" class="table table-hover">
+                                        <thead>
+                                        <tr>
+                                            <th scope="col">Code ID</th>
+                                            <th scope="col">Time</th>
+                                            <th scope="col">Points</th>
+                                            <th scope="col">Redemption Code</th>
+                                            <th scope="col">Expiration</th>
+
+                                        </tr>
+                                        </thead>
+                                        <tbody class="table-group-divider" style="max-height:300px;">
+                                        {% if codes %}
+                                        {% for code in codes %}
+                                        <tr>
+                                            <td>{{ code.code_id }}</td>
+                                            <td>{{ code.time }}</td>
+                                            <td>{{ code.points }}</td>
+                                            <td>{{ code.redemption_code }}</td>
+                                            <td>{{ code.expiration_date }}</td>
+                                        </tr>
+                                        {% endfor %}
+                                        {% else %}
+                                        <tr>
+                                            <td colspan="5">User has not claimed any points</td>
+                                        </tr>
+                                        {% endif %}
+                                        </tbody>
+                                    </table>
+
+
+                                </div>
+                                <nav aria-label="Page navigation">
+    <ul class="pagination justify-content-center" id="pagination">
+      <!-- Pagination links will be populated here dynamically using JavaScript -->
+    </ul>
+  </nav>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12">
+
+                        <div class="card">
+                            <div class="card-header">
+                                <h2 class="">Vouchers Redeemed</h2>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+
+                                    <table id="redeemedVouchersTable" class="table table-hover">
+                                        <thead>
+                                        <tr>
+                                            <th scope="col">Voucher Transaction ID</th>
+                                            <th scope="col">Time</th>
+                                            <th scope="col">Voucher Cart ID</th>
+
+                                        </tr>
+                                        </thead>
+                                        <tbody class="table-group-divider">
+                                        {% if vouchers_redeemed %}
+                                        {% for voucher in vouchers_redeemed %}
+                                        <tr>
+                                            <td>{{voucher.voucher_transaction_id}}</td>
+                                            <td>{{ voucher.time }}</td>
+                                            <td>{{ voucher.voucher_cart_id }}</td>
+
+                                        </tr>
+                                        {% endfor %}
+                                        {% else %}
+                                        <tr>
+                                            <td colspan="3">There are currently no vouchers redeemed.</td>
+                                        </tr>
+                                        {% endif %}
+                                        </tbody>
+                                    </table>
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+<script>
+
+  // Sample data for demonstration purposes (rendered from Flask)
+  const data = {{ codes | tojson }};
+  // Number of rows to display per page
+  const rowsPerPage = 5;
+
+  function displayTable(page) {
+    const tableBody = document.querySelector('#pointsTable tbody');
+    tableBody.innerHTML = '';
+
+    const startIndex = (page - 1) * rowsPerPage;
+    const endIndex = startIndex + rowsPerPage;
+    const tableData = data.slice(startIndex, endIndex);
+
+    tableData.forEach(item => {
+      const row = document.createElement('tr');
+      row.innerHTML = `<td>${item.code_id}</td>
+                       <td>${item.time}</td>
+                       <td>${item.points}</td>
+                       <td>${item.redemption_code}</td>
+                       <td>${item.expiration_date}</td>
+                       `;
+      tableBody.appendChild(row);
+    });
+  }
+
+  function displayPagination() {
+    const totalRows = data.length;
+    const totalPages = Math.ceil(totalRows / rowsPerPage);
+    const pagination = document.getElementById('pagination');
+    pagination.innerHTML = '';
+
+    for (let i = 1; i <= totalPages; i++) {
+      const liClass = i === 1 ? 'page-item active' : 'page-item';
+      const linkClass = 'page-link';
+      const listItem = document.createElement('li');
+      listItem.className = liClass;
+      const link = document.createElement('a');
+      link.className = linkClass;
+      link.href = '#';
+      link.textContent = i;
+      listItem.appendChild(link);
+      pagination.appendChild(listItem);
+
+      listItem.addEventListener('click', function(event) {
+        event.preventDefault();
+        displayTable(i);
+        const activeItem = pagination.querySelector('.active');
+        activeItem.classList.remove('active');
+        listItem.classList.add('active');
+      });
+    }
+  }
+
+  // Initial display on page load
+  displayTable(1);
+  displayPagination();
+</script>
+
+
+{% endblock %}

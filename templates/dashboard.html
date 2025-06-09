@@ -1,0 +1,195 @@
+{% extends 'dashboardbase.html' %}
+
+{% block content %}
+<!--{{ user }}-->
+<!--  <header class="">-->
+<!--    <nav class="navbar navbar-dark navbar-dark-blue bg-dark navbar-expand-md">-->
+<!--      <div class="container-fluid">-->
+<!--        <a class="navbar-brand brand-name" href="#">Medusa</a>-->
+<!--        <div class="collapse navbar-collapse">-->
+<!--          <ul class="navbar-nav me-auto mb-2 mb-lg-0">-->
+<!--            &lt;!&ndash; <li class="nav-item">-->
+<!--              <a class="nav-link active" href="#">Profile</a>-->
+<!--            </li> &ndash;&gt;-->
+<!--            <form class="d-flex searchbar_styles" role="search" action="" method="get">-->
+<!--              <input id="searchbar" list="sections" type="search" name="" value="" class="form-control me-2" placeholder="Search" aria-label="Search">-->
+<!--              <button id="anchor_redirect_below" type="button" name="button" class="btn btn-primary">Search</button>-->
+<!--            </form>-->
+<!--            <li class="nav-item">-->
+<!--              <a class="nav-link active" href="{{ url_for('updateUser')}}">Update</a>-->
+<!--            </li>-->
+<!--            <li class="nav-item">-->
+<!--              <a class="nav-link active" href="{{ url_for('logout')}}">Logout</a>-->
+<!--            </li>-->
+<!--            &lt;!&ndash; <div class="nav-item text-nowrap">-->
+<!--              <a class="nav-link px-3" href="#"><i class="fa fa-solid fa-cart-arrow-down fa-2x padding_icon"></i>Cart</a>-->
+
+<!--            </div> &ndash;&gt;-->
+<!--          </ul>-->
+<!--        </div>-->
+
+
+
+<!--        <div class="navbar-nav">-->
+<!--          <div class="nav-item text-nowrap">-->
+<!--            &lt;!&ndash; <form class="d-flex searchbar_styles" role="search" action="" method="get">-->
+<!--              <input id="searchbar" list="sections" type="search" name="" value="" class="form-control me-2" placeholder="Search" aria-label="Search">-->
+<!--              <button id="anchor_redirect_below" type="button" name="button" class="btn btn-primary">Search</button>-->
+<!--            </form> &ndash;&gt;-->
+<!--          </div>-->
+<!--          <div class="nav-item text-nowrap">-->
+<!--            <a class="nav-link px-3" href="OnlyHobbyCart.html"><i class="fa fa-solid fa-cart-arrow-down fa-2x padding_icon"></i>Cart</a>-->
+
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
+
+<!--    </nav>-->
+<!--  </header>-->
+
+
+
+<!--      <nav id="sidebarMenu" class="sidebar-height d-flex flex-column col-md-3 col-lg-2 d-md-block sidebar-dark-blue sidebar collapse">-->
+<!--        <div class="position-sticky">-->
+<!--          &lt;!&ndash; <div class=" sidebar-dark-blue d-flex flex-column flex-shrink-0 p-3 sidebar-width sidebar-height"> &ndash;&gt;-->
+<!--          <h5 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1">-->
+<!--            <span>Main</span>-->
+<!--          </h5>-->
+<!--          <ul class="nav flex-column">-->
+<!--            <li class="nav-item">-->
+<!--              <a class="nav-link active text-grey current" href="#">Home</a>-->
+<!--            </li>-->
+<!--            <li class="nav-item">-->
+<!--              <a class="nav-link text-grey" href="#">About</a>-->
+<!--            </li>-->
+<!--            <li class="nav-item">-->
+<!--              <a class="nav-link text-grey" href="#">Contact</a>-->
+<!--            </li>-->
+<!--          </ul>-->
+<!--          <h5 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1">-->
+<!--            <span>Products</span>-->
+<!--          </h5>-->
+<!--          <ul class="nav flex-column">-->
+<!--            <li class="nav-item">-->
+<!--              <a class="nav-link text-grey" href="#">Custom PCs</a>-->
+<!--            </li>-->
+<!--            <li class="nav-item">-->
+<!--              <a class="nav-link text-grey" href="#">PC Parts</a>-->
+<!--            </li>-->
+<!--            <li class="nav-item">-->
+<!--              <a class="nav-link text-grey" href="#">Accessories</a>-->
+<!--            </li>-->
+<!--            <li class="nav-item">-->
+<!--              <a class="nav-link text-grey" href="#">Price List</a>-->
+<!--            </li>-->
+
+<!--          </ul>-->
+<!--          <hr>-->
+<!--          <h5 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1">-->
+<!--            <span>Current User</span>-->
+<!--          </h5>-->
+<!--          <div class="dropdown">-->
+<!--            <a class="nav-link text-grey dropdown-toggle dropdown-move-right" id="-->
+<!--            dropdownMenuLink" aria-expanded="false" data-bs-toggle="dropdown">-->
+<!--              <strong>{{ user }}</strong>-->
+<!--            </a>-->
+<!--            <ul class="dropdown-menu dropdown-menu-dark" arial-labelledby="dropdownMenuLink">-->
+<!--              <li>-->
+<!--                <a class="dropdown-item text-grey" href="#">Profile</a>-->
+<!--              </li>-->
+<!--              <li>-->
+<!--                <a class="dropdown-item text-grey" href="{{ url_for('updateUser')}}">User Settings</a>-->
+<!--              </li>-->
+<!--                <li>-->
+<!--                <a class="dropdown-item text-grey" href="{{ url_for('deleteUser')}}">Delete User</a>-->
+<!--              </li>-->
+<!--              <li>-->
+<!--                <hr class="dropdown-divider">-->
+<!--              </li>-->
+<!--              <li>-->
+<!--                <a class="dropdown-item text-grey" href="{{ url_for('logout')}}">Log Out</a>-->
+<!--              </li>-->
+<!--            </ul>-->
+<!--          </div>-->
+<!--          &lt;!&ndash; </div> &ndash;&gt;-->
+
+<!--        </div>-->
+<!--      </nav>-->
+    <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 padding-bottom">
+        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+          <h1 id="page-header">Home</h1>
+        </div>
+        <br>
+        <div class="my-w4 w-100">
+          <h2>Welcome to the main page</h2>
+          <div class="row align-items-md-stretch">
+            <!-- on a medium size screen, take up 6 columns -->
+            <div class="col-md-4">
+              <!-- h-90 : height 90% -->
+              <div class="h-80 p-1 text-dark bg-light border rounded-3">
+                <div class="card h-100">
+                  <div>
+                    <img class="w-100 card-img-top img-size-home" src="{{ url_for('static', filename='media/intel_pc_1.jpg')}}">
+                  </div>
+                  <div class="card-body">
+                    <h2><a class="dynamic_resize_text remove_hyperlink_decoration card-title mb-2">Create Your PC</a></h2>
+                    <p>Configure your own PC here</p>
+                    <button class="btn btn-outline-primary" type="button" name="button" onclick=""><a class="remove_hyperlink_decoration" href="">Buy Now</a></button>
+                  </div>
+
+
+                </div>
+
+
+              </div>
+
+            </div>
+            <div class="col-md-4">
+              <!-- h-90 : height 90% -->
+              <div class="h-80 p-1 text-dark bg-light border rounded-3">
+                <div class="card h-100">
+                  <div>
+                    <img class="w-100 card-img-top img-size-home" src="{{ url_for('static', filename='media/GSkillTridentZNEO3200CL16Dual64GB.jpg')}}">
+                  </div>
+                  <div class="card-body">
+                    <h2><a class="dynamic_resize_text remove_hyperlink_decoration card-title mb-2">Get additional parts</a></h2>
+                    <p>To further customize your pc, all the parts you need</p>
+                    <button class="btn btn-outline-primary" type="button" name="button" onclick=""><a class="remove_hyperlink_decoration" href="">Buy Now</a></button>
+                  </div>
+
+
+                </div>
+
+
+              </div>
+
+            </div>
+            <div class="col-md-4">
+              <!-- h-90 : height 90% -->
+              <div class="h-80 p-1 text-dark bg-light border rounded-3">
+                <div class="card h-100">
+                  <div>
+                    <img class="w-100 card-img-top img-size-home" src="{{ url_for('static', filename='media/CorsairM55RGBPro.jpg')}}">
+                  </div>
+                  <div class="card-body">
+                    <h2><a class="dynamic_resize_text remove_hyperlink_decoration card-title mb-2">Accessories</a></h2>
+                    <p>Keyboards, mice and mousepads</p>
+                    <button class="btn btn-outline-primary" type="button" name="button" onclick=""><a class="remove_hyperlink_decoration" href="">Buy Now</a></button>
+                  </div>
+
+
+                </div>
+
+
+              </div>
+
+            </div>
+
+
+
+            </div>
+          </div>
+
+        </main>
+
+{% endblock %}

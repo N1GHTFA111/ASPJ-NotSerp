@@ -1,0 +1,99 @@
+Injection protection
+- flask sqlalchemy protection against sql injection
+- does not use any interpreter directly (eval or system)
+- limits to only one selection using sql statement
+- parameterized queries with flask sqlalchemy
+
+Broken Auth Protection
+- rate limiting to prevent brute force (login form 5 per 3 min)
+- add captcha (only done for login)
+- password policy (minimum 12 characters, 1 uppercase, 1 lowercase, 1 symbol)
+- hashes password
+- no session id in url
+- forget password has 3fa
+
+General Auth 2.2:
+- has RBAC
+- ip address restriction (NA)
+- no more than 100 failed attempts per hour (NA)
+- has secondary verification through email and also secret access token
+- need to send email or notify via dashboard that their account is updated
+- MFA used (but for login should give the user the option to turn on 2FA NA)
+- uses OTP for forget password (should do for login)
+
+Auth lifecycle 2.3:
+- activation codes are securely randomly generated via secrets module
+- they do expire after a short period of time (5 min) (NA)
+
+Credential Storage requirements 2.4:
+- passwords salted with bcrypt (29 in length tho)
+
+Credential recovery 2.5:
+- recovery secret is not sent in clear text
+- there are no hints
+- password is not revealed
+- default accounts (have for this app for testing purposes)
+- TOTP for forget password
+- if email cannot remember, then must sms (NA)
+
+Lookup secrets verifier 2.6:
+- can only be used once
+- 32 bit in length (need to salt)
+- are unpredictable using secrets module
+
+outofband verifiter 2.7:
+- forget password expires in a few min
+
+one time verifier 2.8:
+- OTP have lifetime of a few min
+- make sure can only use once (NA)
+- if reused, then must logged and rejected
+
+note: remember me has not been set 
+by doing this: rmb to set alternative tokens
+session management 3:
+- 3.1.1 session tokens never revealed
+- 3.2.1 new session token upon auth
+- 3.2.3 secure cookie management
+- 3.3.1 invalidate login
+- 3.3.2 
+- 3.3.3 
+- 3.3.4 can logout
+- 3.4.1 activate after https is active
+- 3.4.2 active
+- 3.4.3 active
+
+http security headers requirements 14.4:
+14.4.1: specify safe character set
+14.4.2: not api so no need
+14.4.3: have content security policy
+14.4.4:  X-Content-Type-Options: nosniff
+14.4.5: Verify that HTTP Strict Transport Security headers are included on all responses 
+and for all subdomains, such as Strict-Transport-Security: max-age=15724800; 
+includeSubdomains.
+14.4.6: Verify that a suitable "Referrer-Policy" header is included, such as "no-referrer" 
+or "same-origin".
+14.4.7: Verify that a suitable X-Frame-Options or Content-Security-Policy: frameancestors header is in use for sites where content should not be embedded in a 
+third-party site.
+
+Credentials:
+User1@email.com:User1@User1User1
+
+SuperAdmin3@email.com:SuperAdmin3@Super3
+
+
+
+
+
+
+
+To do:
+- set up the rest of the file upload protection
+- set up logging for after request with status code
+- set up the filter for dashboard admin (1st)
+- set up the rate limiting for all paths
+- finish up the eclipse protocol (verification for admin user changes)
+- make sure user has the option of choosing if they want remember me
+- set up demo verification of points deduction
+- set up helper functions for blog stuff
+- make sure inputs are secure

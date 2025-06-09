@@ -1,0 +1,31 @@
+{% extends 'dashboard_user_base.html' %}
+
+{% block content %}
+<div class="container-fluid p-0">
+
+    <div class="mb-3">
+        <h1 class="h3 d-inline align-middle">Merchandise</h1>
+
+    </div>
+    <div class="row">
+        {% for product in inventorymodel %}
+        <div class="col-6 col-md-4">
+            <div class="card h-100">
+                <img class="card-img-top" src="{{ url_for('static', filename='product_pics/' + product.get_product_pic())}}" alt="Unsplash">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">{{product.get_product_name()}}</h5>
+                </div>
+                <div class="card-body d-flex flex-column">
+                    <p class="card-text flex-grow-1">{{product.get_description()}} {{product.get_unit_price()}}</p>
+                    <a href="{{ url_for('view_product', username=current_user.get_username(), logged_in=current_user.is_authenticated, profile_pic_name=current_user.get_profile_pic() , product_id=product.get_product_id()) }}" class="btn btn-primary mt-auto">Buy Now</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+
+
+    </div>
+
+</div>
+
+{% endblock %}

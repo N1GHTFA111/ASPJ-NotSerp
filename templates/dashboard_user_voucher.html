@@ -1,0 +1,119 @@
+{% extends 'dashboard_user_base.html' %}
+
+{% block content %}
+<div class="container-fluid p-0">
+    <div class="mb-3">
+        <h1 class="h3 d-inline align-middle">Points Balance: {{ current_balance}}</h1>
+
+    </div>
+    {% from "includes/_formHelper.html" import render_field %}
+    <form action="{{ url_for('user_add_points', username=current_user.get_username(), logged_in=current_user.is_authenticated, profile_pic_name=current_user.get_profile_pic()) }}"
+          method="POST" enctype="multipart/form-data">
+        {{ codepointsform.csrf_token }}
+
+        <!--                    <input type="submit" value="Checkout" class="btn btn-dark">-->
+        <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#redeemCode">
+            Redeem Code
+        </button>
+        <div class="modal" id="redeemCode">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+
+                    <!--                                Modal Header-->
+                    <div class="modal-header">
+                        <h4 class="modal-title">Redeem Points Code</h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+
+                    <!--                                Modal Body-->
+                    <div class="modal-body">
+
+                        <div class="form-group">
+                            {{ render_field(codepointsform.code, class="form-control") }}
+                        </div>
+
+
+
+                        Are you sure you want to continue?
+                    </div>
+
+                    <!--                                Modal Footer-->
+                    <div class="modal-footer">
+                        <input type="submit" value="Create" class="btn btn-warning">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </form>
+    <hr>
+    <div class="mb-3">
+        <h1 class="h3 d-inline align-middle">Voucher Redemption</h1>
+
+    </div>
+    <div class="row">
+        {% for voucherblueprint in voucherinventorymodel %}
+
+        <div class="col-6 col-md-4">
+            <div class="card h-100">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">{{voucherblueprint.get_voucher_name()}}</h5>
+                </div>
+                <div class="card-body d-flex flex-column">
+                    <p class="card-text flex-grow-1">Description: {{voucherblueprint.get_description()}}</p>
+                    <p class="card-text flex-grow-1">Percent Off: {{voucherblueprint.get_percent()}}</p>
+                  <p class="card-text flex-grow-1">Points Needed: {{voucherblueprint.get_unit_points_needed()}}</p>
+                    {% if check_if_user_has_enough_points_for_voucher(current_user, voucherblueprint) %}
+                    <a href="{{ url_for('user_generate_voucher', username=current_user.get_username(), logged_in=current_user.is_authenticated, profile_pic_name=current_user.get_profile_pic() , voucher_id=voucherblueprint.get_voucher_id()) }}" class="btn btn-primary mt-auto">Get Now</a>
+                    {% else %}
+                    <a class="btn btn-primary mt-auto">Not Enough Points</a>
+                    {%endif%}
+                </div>
+            </div>
+        </div>
+
+        {% endfor %}
+
+
+    </div>
+
+    <hr>
+    <div class="mb-3">
+        <h1 class="h3 d-inline align-middle">Redeemed Vouchers</h1>
+
+    </div>
+    <div class="row" style="overflow:auto;">
+        <div class="table-responsive">
+            <table class="table table-hover my-0">
+                <thead>
+                <th>Voucher Cart Id</th>
+                <th>Code To Redeem</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Percent Off</th>
+                <th>Points Needed</th>
+
+
+                </thead>
+
+                {% for voucher in vouchercartmodel %}
+                <tr>
+                    <td>{{voucher.get_voucher_cart_id()}}</td>
+                    <td>{{voucher.get_coupon_stripe_id()}}</td>
+                    <td>{{voucher.voucher_inventory.get_voucher_name()}}</td>
+                    <td>{{voucher.voucher_inventory.get_description()}}</td>
+                    <td>{{voucher.voucher_inventory.get_percent()}}</td>
+                    <td>{{voucher.voucher_inventory.get_unit_points_needed()}}</td>
+                </tr>
+                {% endfor %}
+
+
+            </table>
+        </div>
+    </div>
+
+
+</div>
+
+{% endblock %}

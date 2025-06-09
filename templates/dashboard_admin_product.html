@@ -1,0 +1,206 @@
+{% extends 'dashboard_admin_base.html' %}
+
+{% block content %}
+<div class="container-fluid p-0">
+
+    <div class="mb-3">
+        <h1 class="h3 d-inline align-middle" id="page-identifier">Products</h1>
+    </div>
+    {% from "includes/_formHelper.html" import render_field %}
+    <form action="{{ url_for('create_new_product', username=current_user.get_username(), logged_in=current_user.is_authenticated, profile_pic_name=current_user.get_profile_pic()) }}"
+          method="POST" enctype="multipart/form-data">
+        {{ createform.csrf_token }}
+
+        <!--                    <input type="submit" value="Checkout" class="btn btn-dark">-->
+        <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#createProduct">
+            Create New Product
+        </button>
+        <div class="modal" id="createProduct">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+
+                    <!--                                Modal Header-->
+                    <div class="modal-header">
+                        <h4 class="modal-title">Create Product</h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+
+                    <!--                                Modal Body-->
+                    <div class="modal-body">
+
+                        <div class="form-group">
+                            {{ render_field(createform.product_name, class="form-control") }}
+                        </div>
+                        <div class="form-group">
+                            {{ render_field(createform.description, class="form-control") }}
+                        </div>
+                        <div class="form-group">
+                            {{ render_field(createform.quantity, class="form-control") }}
+                        </div>
+                        <div class="form-group">
+                            {{ render_field(createform.unit_price, class="form-control") }}
+                        </div>
+                        <div class="form-group">
+                            {{ render_field(createform.product_pic, class="form-control") }}
+                        </div>
+
+
+                        Are you sure you want to continue?
+                    </div>
+
+                    <!--                                Modal Footer-->
+                    <div class="modal-footer">
+                        <input type="submit" value="Create" class="btn btn-warning">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </form>
+    <div class="row" style="overflow:auto;">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">Product List</h5>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover my-0">
+                        <thead>
+                        <th>Product Id</th>
+                        <th>Product Name</th>
+                        <th>Description</th>
+                        <th>Quantity</th>
+                        <th>Unit Price</th>
+                        <th>Product Stripe Id</th>
+                        <th>Price Stripe Id</th>
+                        <th>Product Pic</th>
+
+                        </thead>
+
+                        {% for product in all_products %}
+                        <tr>
+                            <td>{{product.get_product_id()}}</td>
+                            <td>{{product.get_product_name()}}</td>
+                            <td>{{product.get_description()}}</td>
+                            <td>{{product.get_quantity()}}</td>
+                            <td>{{product.get_unit_price()}}</td>
+                            <td>{{product.get_product_stripe_id()}}</td>
+                            <td>{{product.get_price_stripe_id()}}</td>
+                            <td>{{product.get_product_pic()}}</td>
+                            <td>
+                                <form action="{{ url_for('update_product', username=current_user.get_username(), logged_in=current_user.is_authenticated, profile_pic_name=current_user.get_profile_pic() , product_id=product.get_product_id())}}"
+                                      method="POST" enctype="multipart/form-data">
+                                    {{ updateform.csrf_token}}
+                                    <!--                    <input type="submit" value="Checkout" class="btn btn-dark">-->
+                                    <button type="button" class="btn btn-dark" data-bs-toggle="modal"
+                                            data-bs-target="#myModal_{{product.get_product_id()}}_updateProduct">
+                                        Update New Product
+                                    </button>
+                                    <div class="modal" id="myModal_{{product.get_product_id()}}_updateProduct">
+                                        <div class="modal-dialog modal-lg">
+                                            <div class="modal-content">
+
+                                                <!--                                Modal Header-->
+                                                <div class="modal-header">
+                                                    <h4 class="modal-title">Update Product</h4>
+                                                    <button type="button" class="btn-close"
+                                                            data-bs-dismiss="modal"></button>
+                                                </div>
+
+                                                <!--                                Modal Body-->
+                                                <div class="modal-body">
+
+                                                    <div class="form-group">
+                                                        {{ render_field(updateform.product_name, class="form-control",
+                                                        value=product.get_product_name()) }}
+                                                    </div>
+                                                    <div class="form-group">
+                                                        {{ render_field(updateform.description, class="form-control",
+                                                        value=product.get_description()) }}
+                                                    </div>
+                                                    <div class="form-group">
+                                                        {{ render_field(updateform.quantity, class="form-control",
+                                                        value=product.get_quantity()) }}
+                                                    </div>
+                                                    <div class="form-group">
+                                                        {{ render_field(updateform.unit_price, class="form-control",
+                                                        value=product.get_unit_price()) }}
+                                                    </div>
+                                                    <div class="form-group">
+                                                        {{ render_field(updateform.product_pic, class="form-control") }}
+                                                    </div>
+
+
+                                                    Are you sure you want to continue?
+                                                </div>
+
+                                                <!--                                Modal Footer-->
+                                                <div class="modal-footer">
+                                                    <input type="submit" value="Update" class="btn btn-warning">
+                                                    <button type="button" class="btn btn-secondary"
+                                                            data-bs-dismiss="modal">
+                                                        Cancel
+                                                    </button>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </td>
+                            <td>
+                                <form action="{{ url_for('delete_product', username=current_user.get_username(), logged_in=current_user.is_authenticated, profile_pic_name=current_user.get_profile_pic() , product_id=product.get_product_id()) }}"
+                                      method="POST">
+                                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                    <!--                    <input type="submit" value="Delete" class="btn btn-danger">-->
+                                    <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                                            data-bs-target="#myModal_{{product.get_product_id()}}_deleteProduct">
+                                        Delete
+                                    </button>
+                                    <!--                    Modal-->
+                                    <div class="modal fade" id="myModal_{{product.get_product_id()}}_deleteProduct"
+                                         aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+
+                                                <!--                                Modal Header-->
+                                                <div class="modal-header">
+                                                    <h4 class="modal-title">Delete Confirmation</h4>
+                                                    <button type="button" class="btn-close"
+                                                            data-bs-dismiss="modal"></button>
+                                                </div>
+
+                                                <!--                                Modal Body-->
+                                                <div class="modal-body">
+                                                    Are you sure you want to delete this user?
+                                                </div>
+
+                                                <!--                                Modal Footer-->
+                                                <div class="modal-footer">
+                                                    <input type="submit" value="Delete" class="btn btn-danger">
+                                                    <button type="button" class="btn btn-secondary"
+                                                            data-bs-dismiss="modal">Cancel
+                                                    </button>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </td>
+
+                        </tr>
+                        {% endfor %}
+
+
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+</div>
+{% endblock %}

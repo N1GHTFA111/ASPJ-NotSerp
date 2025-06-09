@@ -1,0 +1,5 @@
+dont need on the fly xss, do dashboard analysis
+
+dont enforce unique email
+
+dont enforce same product name

@@ -1,0 +1,174 @@
+{% extends 'dashboard_user_base.html' %}
+
+{% block content %}
+<div class="container-fluid p-0">
+
+    <div class="mb-3">
+        <h1 class="h3 d-inline align-middle">Blog</h1>
+
+    </div>
+    {% from "includes/_formHelper.html" import render_field %}
+    <form action="{{ url_for('create_new_feedback', username=current_user.get_username(), logged_in=current_user.is_authenticated, profile_pic_name=current_user.get_profile_pic()) }}"
+          method="POST" enctype="multipart/form-data">
+        {{ createform.csrf_token }}
+
+        <!--                    <input type="submit" value="Checkout" class="btn btn-dark">-->
+        <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#createFeedback">
+            Create New Feedback
+        </button>
+        <div class="modal" id="createFeedback">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+
+                    <!--                                Modal Header-->
+                    <div class="modal-header">
+                        <h4 class="modal-title">Create Feedback</h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+
+                    <!--                                Modal Body-->
+                    <div class="modal-body">
+
+                        <div class="form-group">
+                            {{ render_field(createform.new_title, class="form-control") }}
+                        </div>
+                        <div class="form-group">
+                            {{ render_field(createform.new_desc, class="form-control") }}
+                        </div>
+
+
+
+                        Are you sure you want to continue?
+                    </div>
+
+                    <!--                                Modal Footer-->
+                    <div class="modal-footer">
+                        <input type="submit" value="Create" class="btn btn-warning">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </form>
+    <div class="row">
+        <div class="table-responsive">
+            <table class="table table-hover my-0">
+                <thead>
+                <th>Feedback Id</th>
+                <th>Feedback Title</th>
+                <th>Description</th>
+                <th>Time created</th>
+                <th>Latest time updated</th>
+
+                </thead>
+
+                {% for feedback in feedback_model %}
+                <tr>
+                    <td>{{feedback.get_feedback_id()}}</td>
+                    <td>{{feedback.get_title()}}</td>
+                    <td>{{feedback.get_description()}}</td>
+                    <td>{{feedback.get_time_created()}}</td>
+                    <td>{{feedback.get_time_last_updated()}}</td>
+
+                    <td>
+                        <form action="{{ url_for('update_feedback', username=current_user.get_username(), logged_in=current_user.is_authenticated, profile_pic_name=current_user.get_profile_pic() , feedback_id=feedback.get_feedback_id())}}"
+                              method="POST" enctype="multipart/form-data">
+                            {{ updateform.csrf_token}}
+                            <!--                    <input type="submit" value="Checkout" class="btn btn-dark">-->
+                            <button type="button" class="btn btn-dark" data-bs-toggle="modal"
+                                    data-bs-target="#myModal_{{feedback.get_feedback_id()}}_updateProduct">
+                                Update Feedback
+                            </button>
+                            <div class="modal" id="myModal_{{feedback.get_feedback_id()}}_updateProduct">
+                                <div class="modal-dialog modal-lg">
+                                    <div class="modal-content">
+
+                                        <!--                                Modal Header-->
+                                        <div class="modal-header">
+                                            <h4 class="modal-title">Update Feedback</h4>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                        </div>
+
+                                        <!--                                Modal Body-->
+                                        <div class="modal-body">
+
+                                            <div class="form-group">
+                                                {{ render_field(updateform.new_title, class="form-control",
+                                                value=feedback.get_title()) }}
+                                            </div>
+                                            <div class="form-group">
+                                                {{ render_field(updateform.new_desc, class="form-control",
+                                                value=feedback.get_description()) }}
+                                            </div>
+
+
+                                            Are you sure you want to continue?
+                                        </div>
+
+                                        <!--                                Modal Footer-->
+                                        <div class="modal-footer">
+                                            <input type="submit" value="Update" class="btn btn-warning">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                                Cancel
+                                            </button>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </td>
+                    <td>
+                        <form action="{{ url_for('delete_feedback', username=current_user.get_username(), logged_in=current_user.is_authenticated, profile_pic_name=current_user.get_profile_pic() , feedback_id=feedback.get_feedback_id()) }}"
+                              method="POST">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                            <!--                    <input type="submit" value="Delete" class="btn btn-danger">-->
+                            <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                                    data-bs-target="#myModal_{{feedback.get_feedback_id()}}_deleteFeedback">
+                                Delete
+                            </button>
+                            <!--                    Modal-->
+                            <div class="modal fade" id="myModal_{{feedback.get_feedback_id()}}_deleteFeedback" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+
+                                        <!--                                Modal Header-->
+                                        <div class="modal-header">
+                                            <h4 class="modal-title">Delete Confirmation</h4>
+                                            <button type="button" class="btn-close"
+                                                    data-bs-dismiss="modal"></button>
+                                        </div>
+
+                                        <!--                                Modal Body-->
+                                        <div class="modal-body">
+                                            Are you sure you want to delete this feedback?
+                                        </div>
+
+                                        <!--                                Modal Footer-->
+                                        <div class="modal-footer">
+                                            <input type="submit" value="Delete" class="btn btn-danger">
+                                            <button type="button" class="btn btn-secondary"
+                                                    data-bs-dismiss="modal">Cancel
+                                            </button>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </td>
+
+                </tr>
+                {% endfor %}
+
+
+            </table>
+        </div>
+
+
+    </div>
+
+</div>
+
+{% endblock %}

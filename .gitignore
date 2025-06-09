@@ -1,0 +1,53 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environment
+venv/
+env/
+
+# Environment variables
+.env
+*.pem
+
+# Flask & gunicorn files
+instance/
+*.log
+
+# PyInstaller
+*.manifest
+*.spec
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints
+
+# mypy / pylint
+.mypy_cache/
+.dmypy.json
+.pyre/
+
+# IDE / editor settings
+.vscode/
+.idea/
+*.sublime-workspace
+*.sublime-project
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Backup or temp files
+*.bak
+*.swp
+*~

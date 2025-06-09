@@ -1,0 +1,171 @@
+{% extends 'dashboard_user_base.html' %}
+
+{% block content %}
+<div class="container-fluid p-0">
+
+    <div class="mb-3">
+        <h1 class="h3 d-inline align-middle">Cart</h1>
+
+    </div>
+    <div class="row">
+
+        <div class="table-responsive">
+            <table class="table table-hover my-0">
+                <thead>
+                <th>Product Picture</th>
+                <th>Product Name</th>
+                <th>Quantity</th>
+                <th>Unit Price</th>
+
+
+                </thead>
+
+                {% for product in cartdb %}
+                <tr>
+                    <td>{{product.inventory.get_product_pic()}}</td>
+                    <td>{{product.inventory.get_product_name()}}</td>
+                    <td>{{product.get_quantity()}}</td>
+                    <td>{{product.inventory.get_unit_price()}}</td>
+
+                    <td>
+                        <form action="{{ url_for('edit_cart_quantity', username=current_user.get_username(), logged_in=current_user.is_authenticated, profile_pic_name=current_user.get_profile_pic() , cart_id=product.get_cart_id()) }}"
+                              method="POST">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                            <!--                    <input type="submit" value="Delete" class="btn btn-danger">-->
+                            <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                                    data-bs-target="#myModal_{{product.get_cart_id()}}_editQuantity">
+                                Update
+                            </button>
+                            <!--                    Modal-->
+                            <div class="modal fade" id="myModal_{{product.get_cart_id()}}_editQuantity" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+
+                                        <!--                                Modal Header-->
+                                        <div class="modal-header">
+                                            <h4 class="modal-title">Update Confirmation</h4>
+                                            <button type="button" class="btn-close"
+                                                    data-bs-dismiss="modal"></button>
+                                        </div>
+
+                                        <!--                                Modal Body-->
+                                        <div class="modal-body">
+                                            {% from "includes/_formHelper.html" import render_field %}
+                                            <div class="form-group">
+                                                {{ render_field(form.quantity, class="form-control", min=1, max=product.inventory.get_quantity()) }}
+
+                                            </div>
+                                        </div>
+
+                                        <!--                                Modal Footer-->
+                                        <div class="modal-footer">
+                                            <input type="submit" value="Update" class="btn btn-warning">
+                                            <button type="button" class="btn btn-secondary"
+                                                    data-bs-dismiss="modal">Cancel
+                                            </button>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </td>
+                    <td>
+                        <form action="{{ url_for('remove_from_cart', username=current_user.get_username(), logged_in=current_user.is_authenticated, profile_pic_name=current_user.get_profile_pic() , cart_id=product.get_cart_id()) }}"
+                              method="POST">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                            <!--                    <input type="submit" value="Delete" class="btn btn-danger">-->
+                            <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                                    data-bs-target="#myModal_{{product.get_cart_id()}}_deleteProduct">
+                                Remove
+                            </button>
+                            <!--                    Modal-->
+                            <div class="modal fade" id="myModal_{{product.get_cart_id()}}_deleteProduct" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+
+                                        <!--                                Modal Header-->
+                                        <div class="modal-header">
+                                            <h4 class="modal-title">Delete Confirmation</h4>
+                                            <button type="button" class="btn-close"
+                                                    data-bs-dismiss="modal"></button>
+                                        </div>
+
+                                        <!--                                Modal Body-->
+                                        <div class="modal-body">
+                                            Are you sure you want to remove this item from cart?
+                                        </div>
+
+                                        <!--                                Modal Footer-->
+                                        <div class="modal-footer">
+                                            <input type="submit" value="Remove" class="btn btn-danger">
+                                            <button type="button" class="btn btn-secondary"
+                                                    data-bs-dismiss="modal">Cancel
+                                            </button>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </td>
+
+                </tr>
+                {% endfor %}
+
+
+            </table>
+        </div>
+
+
+    </div>
+    {% from "includes/_formHelper.html" import render_field %}
+    {% if cart_length > 0 %}
+    <form action="{{ url_for('checkout', username=current_user.get_username(), logged_in=current_user.is_authenticated, user_id=current_user.get_id()) }}"
+                                      method="POST">
+                                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                    <!--                    <input type="submit" value="Delete" class="btn btn-danger">-->
+                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                            data-bs-target="#checkout_{{current_user.get_id()}}_deleteUser">
+                                        Checkout
+                                    </button>
+                                    <!--                    Modal-->
+                                    <div class="modal fade" id="checkout_{{current_user.get_id()}}_deleteUser"
+                                         aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+
+                                                <!--                                Modal Header-->
+                                                <div class="modal-header">
+                                                    <h4 class="modal-title">Checkout Confirmation</h4>
+                                                    <button type="button" class="btn-close"
+                                                            data-bs-dismiss="modal"></button>
+                                                </div>
+
+                                                <!--                                Modal Body-->
+                                                <div class="modal-body">
+                                                    <div class="form-group">
+                                                        {{ render_field(checkoutcodeform.code, class="form-control") }}
+                                                    </div>
+                                                    Are you sure you want to Checkout
+                                                </div>
+
+                                                <!--                                Modal Footer-->
+                                                <div class="modal-footer">
+                                                    <input type="submit" value="Checkout" class="btn btn-danger">
+                                                    <button type="button" class="btn btn-secondary"
+                                                            data-bs-dismiss="modal">Cancel
+                                                    </button>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+    {% else %}
+    <button class="btn-danger btn">No Items To Checkout</button>
+    {% endif %}
+
+</div>
+
+{% endblock %}
